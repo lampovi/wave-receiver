@@ -1,0 +1,9 @@
+origin: https://localhost/
+options:
+  covers:
+    enabled: true
+    music_dir: /root/music
+    covers_dir: /root/covers
+  motd:
+    enabled: false
+     

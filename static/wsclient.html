@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket messenger</title>
+        <meta charset="utf-8"/>
+        <style>
+            body { display: table; margin: 25px auto; }
+        </style>
+    </head>
+    <body>
+        <input id="url" type="text" autofocus="" value=""/>
+        <button id="connect">Connect</button>
+        <button id="disconnect">Disconect</button>
+        <button id="clear">Clear</button><br/>
+        <textarea id="output" cols="80" rows="30" readonly=""></textarea><br/>
+        <input id="input" type="text" placeholder="message"/>
+        <button id="send">Send</button>
+    </body>
+    <script>
+        var webSocket;
+        
+        url = document.getElementById("url");
+        connect = document.getElementById("connect");
+        disconnect = document.getElementById("disconnect");
+        clear = document.getElementById("clear");
+        screen = document.getElementById("output");
+        input = document.getElementById("input");
+        send = document.getElementById("send");
+
+        connect.onclick = _ => {
+            webSocket = new WebSocket(url.value);
+            webSocket.onopen = (e) => { output("WS: WebSocket openned"); };
+            webSocket.onmessage = (e) => { output("<<< " + e.data); };
+            webSocket.onerror = (e) => { output("WS: Error " + e); };
+            webSocket.onclose = (e) => { output("WS: WebSocket disconnected"); };
+        };
+        send.onclick = _ => { output(">>> " + input.value); webSocket.send(input.value); };
+        disconnect.onclick = _ => { webSocket.close() };
+
+        clear.onclick = _ => { screen.textContent = ""; };
+        function output(text) { screen.textContent += text + "\n"; };
+    </script>
+</html>
